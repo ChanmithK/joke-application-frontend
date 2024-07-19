@@ -19,11 +19,9 @@ const AddJoke = () => {
 
   const fetchTypes = async () => {
     try {
-      const response = await axios.get("http://localhost:3002/types", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.get(
+        "https://submit-jokes-microservice-production.up.railway.app/jokes/types"
+      );
       setTypes(response.data);
     } catch (error) {
       console.error("Error fetching types:", error);

@@ -18,11 +18,14 @@ const ViewTypes = () => {
 
   const fetchTypes = async () => {
     try {
-      const response = await axios.get<Type[]>("http://localhost:3002/types", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.get<Type[]>(
+        "https://moderate-jokes-microservice-production.up.railway.app/types",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setTypes(response.data);
     } catch (error) {
       console.error("Error fetching types:", error);
@@ -33,7 +36,7 @@ const ViewTypes = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:3002/type`,
+        `https://moderate-jokes-microservice-production.up.railway.app/type`,
         {
           type: newType,
         },

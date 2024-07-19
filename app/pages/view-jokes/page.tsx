@@ -33,7 +33,7 @@ const ViewJokes = () => {
         "https://moderate-jokes-microservice-production.up.railway.app/jokes",
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Set the Bearer token in the Authorization header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -45,6 +45,7 @@ const ViewJokes = () => {
     }
   };
 
+  // Function to fetch types from the backend
   const fetchTypes = async () => {
     try {
       const response = await axios.get(
@@ -60,8 +61,6 @@ const ViewJokes = () => {
       console.error("Error fetching types:", error);
     }
   };
-
-  console.log("types", types);
 
   // Fetch jokes when component mounts
   useEffect(() => {
@@ -172,6 +171,7 @@ const ViewJokes = () => {
     }
   };
 
+  // Function to handle delete from DB button click
   const handleDeleteFromSQLDB = async (id: number) => {
     try {
       const response = await axios.delete(

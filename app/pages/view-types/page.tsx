@@ -16,6 +16,7 @@ const ViewTypes = () => {
     fetchTypes();
   }, []);
 
+  // Function to fetch types
   const fetchTypes = async () => {
     try {
       const response = await axios.get<Type[]>(
@@ -32,6 +33,7 @@ const ViewTypes = () => {
     }
   };
 
+  // Function to add new type
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

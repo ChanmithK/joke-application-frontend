@@ -13,6 +13,7 @@ const HeroSection = () => {
   const [joke, setJoke] = useState("");
   const [types, setTypes] = useState<Type[]>([]);
 
+  // Function to fetch a random joke
   const fetchJoke = async () => {
     try {
       const response = await axios.get(
@@ -25,6 +26,7 @@ const HeroSection = () => {
     }
   };
 
+  // Function to fetch types
   const fetchTypes = async () => {
     try {
       const response = await axios.get(
@@ -35,8 +37,6 @@ const HeroSection = () => {
       console.error("Error fetching types:", error);
     }
   };
-
-  console.log("types", types);
 
   // Fetch jokes when component mounts
   useEffect(() => {

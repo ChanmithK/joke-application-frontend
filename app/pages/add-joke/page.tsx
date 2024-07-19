@@ -17,6 +17,7 @@ const AddJoke = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  // Fetch joke types from the API
   const fetchTypes = async () => {
     try {
       const response = await axios.get(
@@ -35,6 +36,7 @@ const AddJoke = () => {
     fetchTypes();
   }, []);
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

@@ -10,9 +10,15 @@ interface Joke {
   status: string;
 }
 
+interface Type {
+  _id: number;
+  type: string;
+}
+
 const ViewJokes = () => {
   // State hooks for managing jokes and edit mode
   const [jokes, setJokes] = useState<Joke[]>([]);
+  const [types, setTypes] = useState<Type[]>([]);
   const [editJokeId, setEditJokeId] = useState<number | null>(null);
   const [editType, setEditType] = useState<string>("");
   const [editContent, setEditContent] = useState<string>("");
@@ -39,9 +45,25 @@ const ViewJokes = () => {
     }
   };
 
+  const fetchTypes = async () => {
+    try {
+      const response = await axios.get("http://localhost:3002/types", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setTypes(response.data);
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
+  };
+
+  console.log("types", types);
+
   // Fetch jokes when component mounts
   useEffect(() => {
     fetchJokes();
+    fetchTypes();
   }, []);
 
   // Function to handle edit button click
@@ -260,12 +282,17 @@ const ViewJokes = () => {
                   </td>
                   <td className="py-3 px-6 text-left">
                     {joke._id === editJokeId ? (
-                      <input
-                        type="text"
+                      <select
                         value={editType}
                         onChange={(e) => setEditType(e.target.value)}
                         className="w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none"
-                      />
+                      >
+                        {types.map((type) => (
+                          <option key={type._id} value={type.type}>
+                            {type.type}
+                          </option>
+                        ))}
+                      </select>
                     ) : (
                       joke.type
                     )}

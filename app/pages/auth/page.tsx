@@ -116,10 +116,13 @@ const Login = () => {
   const login = async () => {
     try {
       // Make an HTTP request to your login API
-      const response = await axios.post("http://localhost:3002/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://moderate-jokes-microservice-production.up.railway.app/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       // Assuming response contains userId and token
       const { token } = response.data;

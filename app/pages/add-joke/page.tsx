@@ -2,13 +2,40 @@
 import Navbar from "@/app/components/Navbar";
 import axios from "axios";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+interface Type {
+  _id: number;
+  type: string;
+}
 
 const AddJoke = () => {
   const [type, setType] = useState("general");
+  const [types, setTypes] = useState<Type[]>([]);
+
   const [content, setContent] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const fetchTypes = async () => {
+    try {
+      const response = await axios.get("http://localhost:3002/types", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setTypes(response.data);
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
+  };
+
+  console.log("types", types);
+
+  // Fetch jokes when component mounts
+  useEffect(() => {
+    fetchTypes();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,9 +94,11 @@ const AddJoke = () => {
                 onChange={(e) => setType(e.target.value)}
                 className="w-full border border-purple-900 rounded-md px-3 py-2 bg-bg-white text-black focus:outline-none focus:ring focus:ring-purple-400"
               >
-                <option value="general">General</option>
-                <option value="tech">Tech</option>
-                <option value="punny">Punny</option>
+                {types.map((type) => (
+                  <option key={type._id} value={type.type}>
+                    {type.type}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="mb-4">

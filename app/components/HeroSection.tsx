@@ -1,11 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import axios from "axios"; // Import Axios
+import axios from "axios";
+
+interface Type {
+  _id: number;
+  type: string;
+}
 
 const HeroSection = () => {
   const [selectedType, setSelectedType] = useState("");
   const [joke, setJoke] = useState("");
+  const [types, setTypes] = useState<Type[]>([]);
 
   const fetchJoke = async () => {
     try {
@@ -18,6 +24,26 @@ const HeroSection = () => {
       setJoke("Failed to fetch joke. Please try again later.");
     }
   };
+
+  const fetchTypes = async () => {
+    try {
+      const response = await axios.get("http://localhost:3002/types", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setTypes(response.data);
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
+  };
+
+  console.log("types", types);
+
+  // Fetch jokes when component mounts
+  useEffect(() => {
+    fetchTypes();
+  }, []);
 
   const handleTypeChange = (event: any) => {
     setSelectedType(event.target.value);
@@ -53,9 +79,11 @@ const HeroSection = () => {
             onChange={handleTypeChange}
             className="px-3 py-2 border rounded-md bg-purple-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
           >
-            <option value="tech">Tech</option>
-            <option value="punny">Punny</option>
-            <option value="general">General</option>
+            {types.map((type) => (
+              <option key={type._id} value={type.type}>
+                {type.type}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -75,7 +103,7 @@ const HeroSection = () => {
         ) : (
           <div className="mt-8 p-6 bg-purple-900 bg-opacity-70 rounded-md shadow-md w-full max-w-md">
             <p className="text-lg font-medium text-center">
-              😢 No joke found. Please Try again.
+              Click the &quot;Generate Joke&quot; button to get a great joke😅
             </p>
           </div>
         )}
